@@ -1,0 +1,28 @@
+{
+  "name": "eatery-web",
+  "version": "0.0.0",
+  "description": "Bot for food",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/cuappdev/eatery-web"
+  },
+  "keywords": [
+    "cuappdev",
+    "food",
+    "Cornell",
+    "University"
+  ],
+  "author": "CUAppDev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cuappdev/eatery-web/issues"
+  },
+  "homepage": "https://github.com/cuappdev/eatery-web",
+  "dependencies": {
+    "Iroh": "git://github.com/mrkev/Iroh.git#91ceb73a07f2583211001088b8780d4dd6b3fef0"
+  }
+}
