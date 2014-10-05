@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/cuappdev/eatery-web/issues"
   },
-  "homepage": "https://github.com/cuappdev/eatery-web"
+  "homepage": "https://github.com/cuappdev/eatery-web",
+  "dependencies": {
+    "Iroh": "git://github.com/mrkev/Iroh.git#91ceb73a07f2583211001088b8780d4dd6b3fef0"
+  }
 }
