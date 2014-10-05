@@ -1,4 +1,6 @@
 'use strict';
-var dinning = require("Iroh");
+var dining = require("Iroh");
 
-console.log('yay!');
+console.log(dining.query().then(console.log));
+
+console.log(dining.query('okenshields').then(console.log));
