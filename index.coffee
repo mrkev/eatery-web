@@ -7,6 +7,7 @@ app   = express()
 router  = express.Router()
 
 config  = require("./config")
+routes_calendar = require './routes_calendar'
 
 #
 # Set up the routes
@@ -39,15 +40,11 @@ router
 
 router
   .route("/calendar")
-  .get (req, res) ->
-      res.json( yo: 'whatup' )
-      return
+  .get routes_calendar.all_ids
 
 router
   .route("/calendar/:cal_id")
-  .get (req, res) ->
-      res.json( cal_id: req.params.cal_id )
-      return
+  .get routes_calendar.cal_id
 
 ## Menus
 
