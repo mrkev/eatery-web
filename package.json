@@ -24,6 +24,7 @@
   "homepage": "https://github.com/cuappdev/eatery-web",
   "dependencies": {
     "Iroh": "git://github.com/mrkev/Iroh.git#91ceb73a07f2583211001088b8780d4dd6b3fef0",
+    "es6-promise": "^1.0.0",
     "express": "^4.9.5"
   }
 }
