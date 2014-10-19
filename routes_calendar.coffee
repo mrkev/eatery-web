@@ -13,6 +13,7 @@ module.exports.all_ids = (req, res) ->
       res.json data.dining
       return
     )
+
 ##
 # req: contains cal_id for calendar to fetch.
 module.exports.cal_id = (req, res) ->
@@ -20,3 +21,28 @@ module.exports.cal_id = (req, res) ->
       res.json data
       return
     )
+
+# req: contains cal_id, start, and end.
+module.exports.render_range = (req, res) ->
+  iroh.query(req.params.cal_id).then (data) ->
+    render_calendar.then res
+
+
+render_calendar = (cal, start, end) ->
+  return new Promise (resolve, reject) ->
+    console.log 'will render the data'
+    resolve cal
+
+
+###
+
+{
+  location : <string>
+  events: [{
+    start: <int>
+    end: <int>
+    description: <string>
+  }]
+}
+
+###
