@@ -31,6 +31,10 @@ router
   .route("/calendar/:cal_id")
   .get routes_calendar.cal_id
 
+router
+  .route("/calendar/:cal_id/:start/:end")
+  .get routes_calendar.render_range 
+
 
 ## Locations
 
