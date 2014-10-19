@@ -24,7 +24,7 @@ router
 ## Calendars
 
 router
-  .route("/calendar")
+  .route("/calendars")
   .get routes_calendar.all_ids
 
 router
@@ -39,7 +39,7 @@ router
 ## Locations
 
 router
-  .route("/location")
+  .route("/locations")
   .get (req, res) ->
     res.json( yo: 'whereup' )
     return
@@ -53,7 +53,7 @@ router
 ## Menus
 
 router
-  .route("/menu")
+  .route("/menus")
   .get (req, res) ->
     res.json( this_is: 'the_menu' )
     return
