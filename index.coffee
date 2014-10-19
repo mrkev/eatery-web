@@ -2,6 +2,7 @@
 #                              Eatery server                                   #
 #                                                                              #
 
+require('newrelic')
 express = require("express")
 app     = express()
 router  = express.Router()
