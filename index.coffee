@@ -38,6 +38,7 @@ router
 
 ## Locations
 
+# FIXME: Include GPS locations for each location
 router
   .route("/locations")
   .get (req, res) ->
