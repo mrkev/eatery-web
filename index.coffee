@@ -2,7 +2,7 @@
 #                              Eatery server                                   #
 #                                                                              #
 
-require('newrelic')
+require('./newrelic')
 express = require("express")
 app     = express()
 router  = express.Router()
