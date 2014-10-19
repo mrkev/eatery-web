@@ -16,9 +16,12 @@ var gettable = function () {
 
         console.log(browser.document.URL)
 
+
         // Count script objects
         var numscripts = browser.document.querySelectorAll("script").length
         var tablehtml = browser.document.querySelector("#t2\\:\\:db").innerHTML; // Escape those got damn colons. Damn I hate Oracle.
+
+        console.log('html', tablehtml)
 
 
         console.log(browser.document.querySelector("#navList3\\:\\:content").innerHTML);
@@ -27,11 +30,11 @@ var gettable = function () {
           browser.select('#navList3\\:\\:content', "North Star", function (ar) {
             console.log('asdf');
           })
-        } catch (e) {console.log(e)}
+        } catch (e) {
+            console.log(e)
+        }
 
-
-
-        //resolve(tablehtml);
+        resolve(tablehtml);
         //
         //
         //
@@ -80,6 +83,8 @@ var t2json = require('fs').readFileSync(__dirname + '/vendor/jquery.tabletojson.
  * @return {[type]}           [description]
  */
 var convert_food_table = function (tablehtml) {
+    console.log('converting')
+    console.log(tablehtml)
 
   return new Promise(function (resolve, reject) {
     jsdom.env({ html : tablehtml,
