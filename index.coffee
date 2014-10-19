@@ -78,8 +78,9 @@ router
 #
 # Start the server
 #
+port = if process.env && process.env == 'production' then 80 else 3000
 app
   .use("/", router)
-  .listen(config.port)
+  .listen(port)
 
-console.log("Good stuff happens on port " + config.port)
+console.log("Good stuff happens on port " + port)
