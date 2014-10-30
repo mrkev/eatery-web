@@ -80,7 +80,7 @@ router
 #
 # Start the server
 #
-port = if process.env.NODE_ENV == 'production' then process.env.PORT else 3000
+port = if process.env.NODE_ENV == 'production' then process.env.PORT else 8080
 app
   .use("/", router)
   .listen(port)

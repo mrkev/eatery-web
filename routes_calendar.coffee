@@ -4,7 +4,7 @@
 # Should get the data, filter it, and answer to the response.
 ##
 
-iroh = require 'Iroh'
+iroh = require('./iroh')
 
 ##
 # Serves array with ids for all available calendars
