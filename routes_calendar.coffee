@@ -19,7 +19,9 @@ module.exports.all_ids = (req, res) ->
 # req: contains cal_id for calendar to fetch.
 module.exports.cal_id = (req, res) ->
   iroh.query(req.params.cal_id).then((data)->
-      res.json data
+      augmentedData = data
+      augmentedData['cal_id'] = req.params.cal_id
+      res.json augmentedData
       return
     )
 
