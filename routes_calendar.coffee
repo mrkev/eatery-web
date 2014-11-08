@@ -29,11 +29,10 @@ module.exports.cal_id = (req, res) ->
 module.exports.render_range = (req, res) ->
   
   iroh.query(req.params.cal_id).then((data)->
-    console.log('============ THEN =============')
-    jayjelly = render_calendar(data, req.params.start, req.params.end)
+    jayjelly = render_calendar(data.events, req.params.start, req.params.end)
     res.json jayjelly
     return
-  )
+  ).catch(console.trace)
 
 
 require 'datejs'
@@ -66,11 +65,13 @@ render_calendar = (cal, start, end) ->
     
   results = []
 
-  console.log "will loop over #{cal.events.length} events"
+  console.log "will loop over #{cal.length} events"
   i = 0
 
-  for x in cal.events
-    # console.log('x: ' + x)
+  for x in cal
+
+
+
     # End of the length we care about 
     death = if x.rrule then x.rrule.end else x.end
     # console.log('Not dead!')
@@ -86,33 +87,38 @@ render_calendar = (cal, start, end) ->
     # console.log "#{death} and #{Object.prototype.toString.call(death)}"
 
     # Filter only the entries that would affect our range.
-    if start.isAfter(x.start) and start.isBefore(death)
-      # console.log(1)
+    if start.isAfter(new Date(x.start)) and start.isBefore(new Date(death))
       
       # We don't care if its for a weekday outside our range.
-      if weekdays && weekdays.indexOf(dow[start.getDay()]) < 0
-        # console.log('1a')
+      if x.rrule? and x.rrule.weekdays? and x.rrule.frequency? and x.rrule.weekdays.indexOf(dow[start.getDay()]) < 0
         continue
       # console.log(2)
 
       # Here we have all rules and events for the days we care about... maybe.
       
+      if x.rrule        
+        byweekday = undefined
+        if x.rrule.weekdays
+          byweekday = x.rrule.weekdays.split(",").map (x)-> return rruleday[x]
 
-      if x.rrule
-        # console.log(3)
-        byweekday = if weekdays then (x.rrule.weekdays.split(",").map (x)->
-          return rruleday[x]
-        ) else []
+        for_rrule = {
+            freq:       RRule.WEEKLY, # Change.
+            dtstart:    x.rrule.start,
+            until:      x.rrule.end,
+            count:      x.rrule.count
+        }
 
-        # console.log('3a')
-        rule = new RRule({
-            freq: RRule.WEEKLY, # Change.
-            byweekday: byweekday,
-            dtstart: x.rrule.start,
-            until: x.rrule.end
-        });
-        # console.log('3b')
+        if byweekday
+          for_rrule.byweekday = byweekday
+        
+        if x.rrule.count
+          for_rrule.count = x.rrule.count
+        
+        rule = new RRule(for_rrule);
         evres = rule.between(start, end).map (r) ->
+
+          x.start = new Date(x.start)
+          x.end = new Date(x.end)
 
           start = new Date(
             r.getFullYear(),
@@ -142,44 +148,3 @@ render_calendar = (cal, start, end) ->
         results.push x
   # console.log(5)
   return results
-
-
-
-###
-
-"events":[{
-  description : ,
-  start : 2014-12-22 05:00,
-  end : 2014-12-23 05:00,
-  location : ,
-  modified : 2014-07-01T19:17:41.000Z,
-  revisions : 1,
-  rrule:
-  {
-    BYDAY : MO,TU,WE,TH,FR,
-    FREQ : WEEKLY,
-    UNTIL: 2015 01 20 
-  },
-  status : CONFIRMED,
-  summary : Closed,
-  timestamp : 2014-10-19T17:32:41.000Z,
-  transparent : OPAQUE,
-  uid : uffgb4i3hfpf2sl36dmibhl69k@google.com,
-  updated : 2013-12-12T21:35:44.000Z
-}
-###
-
-
-
-###
-
-{
-  location : <string>
-  events: [{
-    start: <int>
-    end: <int>
-    description: <string>
-  }]
-}
-
-###
