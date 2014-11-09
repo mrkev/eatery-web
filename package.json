@@ -2,7 +2,7 @@
   "name": "eatery-web",
   "version": "0.0.0",
   "description": "Bot for food",
-  "main": "index.js",
+  "main": "index.coffee",
   "scripts": {
     "test": "mocha"
   },
