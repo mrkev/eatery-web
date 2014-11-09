@@ -7,6 +7,12 @@
 iroh = require 'Iroh'
 RRule = require('rrule').RRule
 
+payment_options = require('./payment_options.json')
+
+paymentOptionsForCalID = (cal_id) ->
+  pms = payment_options[cal_id]
+  return pms.split(',')
+
 ##
 # Serves array with ids for all available calendars
 module.exports.all_ids = (req, res) ->
@@ -18,16 +24,25 @@ module.exports.all_ids = (req, res) ->
 ##
 # req: contains cal_id for calendar to fetch.
 module.exports.cal_id = (req, res) ->
-  iroh.query(req.params.cal_id).then((data)->
+  cal_id = req.params.cal_id
+  iroh.query(cal_id).then((data)->
+      data['cal_id'] = cal_id
+
+      data['payment_methods'] = paymentOptionsForCalID(cal_id)
+
       res.json data
       return
     )
 
 # req: contains cal_id, start, and end.
 module.exports.render_range = (req, res) ->
-  
-  iroh.query(req.params.cal_id).then((data)->
+  cal_id = req.params.cal_id
+  iroh.query(cal_id).then((data)->
     jayjelly = render_calendar(data.events, req.params.start, req.params.end)
+
+    jayjelly['cal_id'] = cal_id
+    jayjelly['payment_methodsu'] = paymentOptionsForCalID(cal_id)
+
     res.json jayjelly
     return
   ).catch(console.trace)
