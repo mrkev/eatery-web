@@ -136,6 +136,7 @@ render_calendar = (cal, start, end) ->
             start : Number(start)
             end   : Number(end)
           }
+          
           return 'done'
 
       else 
