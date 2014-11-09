@@ -1,3 +1,3 @@
-web: coffee app.coffee
+web: coffee index.coffee
 
 
