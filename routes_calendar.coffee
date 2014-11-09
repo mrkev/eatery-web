@@ -34,6 +34,7 @@ module.exports.render_range = (req, res) ->
     return
   ).catch(console.trace)
 
+### Rendering the range ###
 
 require 'datejs'
 
@@ -56,7 +57,6 @@ rruleday = {
 # @return         List of events between [start] and [end] rendered from  
 #                 source [cal].
 render_calendar = (cal, start, end) ->
-
   start = Date.parse start # Start date
   end   = Date.parse end   # End date
 
@@ -69,9 +69,6 @@ render_calendar = (cal, start, end) ->
   i = 0
 
   for x in cal
-
-
-
     # End of the length we care about 
     death = if x.rrule then x.rrule.end else x.end
     # console.log('Not dead!')
@@ -138,8 +135,8 @@ render_calendar = (cal, start, end) ->
 
           results.push {
             summary : x.summary
-            start : start
-            end   : end
+            start : Number(start)
+            end   : Number(end)
           }
           return 'done'
 
