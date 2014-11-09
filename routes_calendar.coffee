@@ -4,7 +4,7 @@
 # Should get the data, filter it, and answer to the response.
 ##
 
-iroh = require('./iroh')
+iroh = require 'Iroh'
 RRule = require('rrule').RRule
 
 ##
@@ -19,9 +19,7 @@ module.exports.all_ids = (req, res) ->
 # req: contains cal_id for calendar to fetch.
 module.exports.cal_id = (req, res) ->
   iroh.query(req.params.cal_id).then((data)->
-      augmentedData = data
-      augmentedData['cal_id'] = req.params.cal_id
-      res.json augmentedData
+      res.json data
       return
     )
 
@@ -33,6 +31,7 @@ module.exports.render_range = (req, res) ->
     res.json jayjelly
     return
   ).catch(console.trace)
+
 
 ### Rendering the range ###
 
@@ -57,6 +56,7 @@ rruleday = {
 # @return         List of events between [start] and [end] rendered from  
 #                 source [cal].
 render_calendar = (cal, start, end) ->
+
   start = Date.parse start # Start date
   end   = Date.parse end   # End date
 
@@ -69,12 +69,9 @@ render_calendar = (cal, start, end) ->
   i = 0
 
   for x in cal
+
     # End of the length we care about 
     death = if x.rrule then x.rrule.end else x.end
-    # console.log('Not dead!')
-
-    weekdays = x.rrule.weekdays || false
-    # console.log(0)
 
     # >> If null, probably eternally repeating event. Not sure though. check.
     #    Make it unreachably in the future.
@@ -89,11 +86,11 @@ render_calendar = (cal, start, end) ->
       # We don't care if its for a weekday outside our range.
       if x.rrule? and x.rrule.weekdays? and x.rrule.frequency? and x.rrule.weekdays.indexOf(dow[start.getDay()]) < 0
         continue
-      # console.log(2)
 
       # Here we have all rules and events for the days we care about... maybe.
       
-      if x.rrule        
+      if x.rrule
+        
         byweekday = undefined
         if x.rrule.weekdays
           byweekday = x.rrule.weekdays.split(",").map (x)-> return rruleday[x]
@@ -112,6 +109,7 @@ render_calendar = (cal, start, end) ->
           for_rrule.count = x.rrule.count
         
         rule = new RRule(for_rrule);
+
         evres = rule.between(start, end).map (r) ->
 
           x.start = new Date(x.start)
@@ -142,7 +140,6 @@ render_calendar = (cal, start, end) ->
           return 'done'
 
       else 
-        # console.log(4)
         results.push x
-  # console.log(5)
+      
   return results
