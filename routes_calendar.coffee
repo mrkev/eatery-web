@@ -33,6 +33,8 @@ module.exports.render_range = (req, res) ->
   ).catch(console.trace)
 
 
+### Rendering the range ###
+
 require 'datejs'
 
 dow = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
@@ -67,8 +69,6 @@ render_calendar = (cal, start, end) ->
   i = 0
 
   for x in cal
-
-
 
     # End of the length we care about 
     death = if x.rrule then x.rrule.end else x.end
@@ -133,8 +133,8 @@ render_calendar = (cal, start, end) ->
 
           results.push {
             summary : x.summary
-            start : start
-            end   : end
+            start : Number(start)
+            end   : Number(end)
           }
           return 'done'
 
