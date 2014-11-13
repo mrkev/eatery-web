@@ -16,9 +16,11 @@ module.exports.menu_id = (req, res) ->
   }, (err, httpResp, body) ->
     $ = cheerio.load(body)
     html = ''
-    console.log($('#menuform').siblings().length)
     # $('#menuform').siblings().each((i, el) ->
     #   html += el.text()
     # )
-    res.send $('#menuform').parent().html()
+    menuItems = []
+    for sib in $('#menuform').siblings('.menuItem')
+      menuItems.push($(sib).text().trim())
+    res.json menuItems
   )
