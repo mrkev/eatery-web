@@ -3,24 +3,57 @@ request = require 'request'
 
 menu_locations = require('./menu_locations.json')
 
-module.exports.menu_id = (req, res) ->
-  cal_id = req.params.cal_id
-  menu_id = menu_locations[cal_id]
+menus = (date, period, loc, callback) ->
   request.post({
     uri: 'http://living.sas.cornell.edu/dine/whattoeat/menus.cfm',
     form: {
-      menudates: '2014-11-9'
-      menuperiod: 'Lunch'
-      menulocations: menu_id
+      menudates: date
+      menuperiod: period
+      menulocations: loc
     }
   }, (err, httpResp, body) ->
     $ = cheerio.load(body)
-    html = ''
-    # $('#menuform').siblings().each((i, el) ->
-    #   html += el.text()
-    # )
     menuItems = []
-    for sib in $('#menuform').siblings('.menuItem')
-      menuItems.push($(sib).text().trim())
-    res.json menuItems
+    currentCategory = ''
+    for sib in $('#menuform').siblings()
+      continue unless $(sib).hasClass('menuCatHeader') || $(sib).hasClass('menuItem')
+      if $(sib).hasClass('menuCatHeader')
+        currentCategory = $(sib).text().trim()
+        continue
+      isHealthy = $(sib).children().length >= 1
+      menuItems.push({
+        name: $(sib).text().trim()
+        category: currentCategory
+        healthy: isHealthy
+      })
+    callback(menuItems)
+  )
+
+module.exports.menu_id = (req, res) ->
+  menu_id = menu_locations[req.params.menu_id]
+  menu_list = {}
+  # Sorry … should probably use streams or promises
+  done1 = done2 = done3 = done4 = false
+  renderIfDone = ->
+    return unless done1 && done2 && done3 && done4
+    res.json menu_list
+  menus('2014-11-12', 'Breakfast', menu_id, (items) ->
+    menu_list['breakfast'] = items
+    done1 = true
+    renderIfDone()
+  )
+  menus('2014-11-12', 'Lunch', menu_id, (items) ->
+    menu_list['lunch'] = items
+    done2 = true
+    renderIfDone()
+  )
+  menus('2014-11-12', 'Dinner', menu_id, (items) ->
+    menu_list['dinner'] = items
+    done3 = true
+    renderIfDone()
+  )
+  menus('2014-11-12', 'Brunch', menu_id, (items) ->
+    menu_list['brunch'] = items
+    done4 = true
+    renderIfDone()
   )
