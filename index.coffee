@@ -67,11 +67,7 @@ router
 
 router
   .route("/menu/:menu_id/:meal_type")
-  .get (req, res) ->
-    res.json
-      menu_id: req.params.menu_id
-      meal_type : req.params.meal_type
-    return
+  .get routes_menu.menu_for_meal
 
 
 ### Good to go ###
