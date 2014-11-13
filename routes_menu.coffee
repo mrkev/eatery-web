@@ -32,27 +32,29 @@ menus = (date, period, loc, callback) ->
 module.exports.menu_id = (req, res) ->
   menu_id = menu_locations[req.params.menu_id]
   menu_list = {}
+  date = new Date()
+  today = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
   # Sorry … should probably use streams or promises
   done1 = done2 = done3 = done4 = false
   renderIfDone = ->
     return unless done1 && done2 && done3 && done4
     res.json menu_list
-  menus('2014-11-12', 'Breakfast', menu_id, (items) ->
+  menus(today, 'Breakfast', menu_id, (items) ->
     menu_list['breakfast'] = items
     done1 = true
     renderIfDone()
   )
-  menus('2014-11-12', 'Lunch', menu_id, (items) ->
+  menus(today, 'Lunch', menu_id, (items) ->
     menu_list['lunch'] = items
     done2 = true
     renderIfDone()
   )
-  menus('2014-11-12', 'Dinner', menu_id, (items) ->
+  menus(today, 'Dinner', menu_id, (items) ->
     menu_list['dinner'] = items
     done3 = true
     renderIfDone()
   )
-  menus('2014-11-12', 'Brunch', menu_id, (items) ->
+  menus(today, 'Brunch', menu_id, (items) ->
     menu_list['brunch'] = items
     done4 = true
     renderIfDone()
