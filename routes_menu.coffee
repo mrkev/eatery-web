@@ -1,5 +1,5 @@
 require './vendor/date_format'
-gcheerio = require 'cheerio'
+cheerio = require 'cheerio'
 request  = require 'request'
 Promise  = require('es6-promise').Promise;
 
@@ -52,8 +52,7 @@ menus = (date, period, loc, callback) ->
   )
 
 today = ->
-  date = new Date()
-  return (date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
+  return new Date()
 
 module.exports.menu_id = (req, res) ->
   menu_id = menu_locations[req.params.menu_id]
