@@ -1,13 +1,35 @@
-cheerio = require 'cheerio'
-request = require 'request'
+require './vendor/date_format'
+gcheerio = require 'cheerio'
+request  = require 'request'
+Promise  = require('es6-promise').Promise;
 
 menu_locations = require('./menu_locations.json')
 
+##
+# @param date       A date object.
+# 
+# @param period     The meal to fetch.
+#                    - Breakfast
+#                    - Lunch
+#                    - Dinner
+#                    - Brunch
+# 
+# @param loc        An integer referring to a particular dining location
+#                    - Cook House Dining Room
+#                    - Becker House Dining Room
+#                    - Keeton House Dining Room
+#                    - Rose House Dining Room
+#                    - Hans Bethe – Jansen's Dining Room
+#                    - Robert Purcell Marketplace Eatery
+#                    - North Star
+#                    - Risley Dining
+#                    - 104 West!
+#                    - Okenshields
 menus = (date, period, loc, callback) ->
   request.post({
     uri: 'http://living.sas.cornell.edu/dine/whattoeat/menus.cfm',
     form: {
-      menudates: date
+      menudates: date.format('yyyy-mm-dd')
       menuperiod: period
       menulocations: loc
     }
