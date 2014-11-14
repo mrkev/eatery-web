@@ -1,3 +1,1 @@
 web: coffee index.coffee
-
-
