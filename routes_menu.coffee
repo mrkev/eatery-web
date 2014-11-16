@@ -55,6 +55,10 @@ today = ->
   return new Date()
 
 module.exports.menu_id = (req, res) ->
+  if (Object.keys(menu_locations).indexOf(req.params.menu_id) < 0)
+    res.status(404).json({error : "Invalid menu index"})
+    return
+
   menu_id = menu_locations[req.params.menu_id]
   menu_list = {}
   t = today()
