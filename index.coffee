@@ -56,11 +56,8 @@ router
 ## Menus
 
 router
-  .route("/menus")
-  .get (req, res) ->
-    res.json( this_is: 'the_menu' )
-    return
-
+  .route('/menus')
+  .get routes_menu.all_menus
 router
   .route("/menu/:menu_id")
   .get routes_menu.menu_id
