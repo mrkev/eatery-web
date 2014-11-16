@@ -69,7 +69,6 @@ router
   .route("/menu/:menu_id/:meal_type")
   .get routes_menu.menu_for_meal
 
-
 ### Good to go ###
 
 #

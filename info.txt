@@ -1,0 +1,11 @@
+
+/calendars
+/calendar/:cal_id
+/calendar/:cal_id/:start/:end
+
+/locations
+/location/:loc_id
+
+/menus
+/menu/:menu_id
+/menu/:menu_id/:meal_type

@@ -1,13 +1,35 @@
+require './vendor/date_format'
 cheerio = require 'cheerio'
-request = require 'request'
+request  = require 'request'
+Promise  = require('es6-promise').Promise;
 
 menu_locations = require('./menu_locations.json')
 
+##
+# @param date       A date object.
+# 
+# @param period     The meal to fetch.
+#                    - Breakfast
+#                    - Lunch
+#                    - Dinner
+#                    - Brunch
+# 
+# @param loc        An integer referring to a particular dining location
+#                    - Cook House Dining Room
+#                    - Becker House Dining Room
+#                    - Keeton House Dining Room
+#                    - Rose House Dining Room
+#                    - Hans Bethe – Jansen's Dining Room
+#                    - Robert Purcell Marketplace Eatery
+#                    - North Star
+#                    - Risley Dining
+#                    - 104 West!
+#                    - Okenshields
 menus = (date, period, loc, callback) ->
   request.post({
     uri: 'http://living.sas.cornell.edu/dine/whattoeat/menus.cfm',
     form: {
-      menudates: date
+      menudates: date.format('yyyy-mm-dd')
       menuperiod: period
       menulocations: loc
     }
@@ -30,10 +52,13 @@ menus = (date, period, loc, callback) ->
   )
 
 today = ->
-  date = new Date()
-  return (date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
+  return new Date()
 
 module.exports.menu_id = (req, res) ->
+  if (Object.keys(menu_locations).indexOf(req.params.menu_id) < 0)
+    res.status(404).json({error : "Invalid menu index"})
+    return
+
   menu_id = menu_locations[req.params.menu_id]
   menu_list = {}
   t = today()

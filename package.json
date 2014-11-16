@@ -2,7 +2,7 @@
   "name": "eatery-web",
   "version": "0.0.2",
   "description": "Bot for food",
-  "main": "index.js",
+  "main": "index.coffee",
   "scripts": {
     "test": "mocha"
   },
@@ -27,7 +27,8 @@
   "homepage": "https://github.com/cuappdev/eatery-web",
   "dependencies": {
     "cheerio": "0.18.0",
-    "coffee-script": "1.8.0",
+    "Iroh": "git://github.com/mrkev/Iroh.git",
+    "coffee-script": "^1.8.0",
     "date-utils": "^1.2.16",
     "datejs": "^1.0.0-rc1",
     "es6-promise": "^1.0.0",
