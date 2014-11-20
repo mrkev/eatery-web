@@ -70,6 +70,7 @@ router
   .route('/auth/groupme')
   .get (req, res) ->
      console.log('=============== GET Auth GroupMe')
+     console.log(req.query.access_token)
      res.send(req.query.access_token)
 
 ### Good to go ###
