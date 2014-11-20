@@ -10,6 +10,7 @@ router  = express.Router()
 config  = require("./config")
 routes_calendar = require './routes_calendar'
 routes_menu = require './routes_menu'
+routes_location = require './routes_location'
 
 #
 # Set up the routes
@@ -43,15 +44,11 @@ router
 # FIXME: Include GPS locations for each location
 router
   .route("/locations")
-  .get (req, res) ->
-    res.json( yo: 'whereup' )
-    return
+  .get routes_location.all_locations
 
 router
   .route("/location/:loc_id")
-  .get (req, res) ->
-    res.json( loc_id: req.params.loc_id )
-    return
+  .get routes_location.location
 
 ## Menus
 
@@ -71,7 +68,8 @@ router
   .get (req, res) ->
      console.log('=============== GET Auth GroupMe')
      console.log(req.query.access_token)
-     res.send(req.query.access_token)
+     # res.send(req.query.access_token)
+     res.redirect('cuappdevEatery://authorize?access_token=' + req.query.access_token)
 
 ### Good to go ###
 
