@@ -66,6 +66,11 @@ router
   .route("/menu/:menu_id/:meal_type")
   .get routes_menu.menu_for_meal
 
+router
+  .route('/auth/groupme')
+  .post (req, res) ->
+     console.log(JSON.stringify(req))
+
 ### Good to go ###
 
 #
