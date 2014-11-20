@@ -70,7 +70,7 @@ router
   .route('/auth/groupme')
   .get (req, res) ->
      console.log('=============== GET Auth GroupMe')
-     console.log(JSON.stringify(req))
+     console.log(req.params)
 
 ### Good to go ###
 
