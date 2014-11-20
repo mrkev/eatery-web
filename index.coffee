@@ -68,9 +68,8 @@ router
 
 router
   .route('/auth/groupme')
-  .get (req, res) ->
-     res.send('Groupme auth')
   .post (req, res) ->
+     console.log('=============== POST Auth GroupMe')
      console.log(JSON.stringify(req))
 
 ### Good to go ###
