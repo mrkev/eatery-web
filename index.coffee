@@ -21,7 +21,7 @@ routes_location = require './routes_location'
 router
   .route("/")
   .get (req, res) ->
-    res.json message: "yo, welcome to our api!"
+    res.sendFile(__dirname + "/info.txt")
     return
 
 ## Calendars
