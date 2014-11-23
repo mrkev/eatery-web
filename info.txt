@@ -1,11 +1,55 @@
 
-/calendars
-/calendar/:cal_id
-/calendar/:cal_id/:start/:end
+Eatery Web, 0.0.2                                                                                       
+                                                                                       
+Yo, welcome to our API! 
 
-/locations
-/location/:loc_id
+PATH                              DESCRIPTION
 
-/menus
-/menu/:menu_id
-/menu/:menu_id/:meal_type
+
+                                  CALENDARS
+
+/calendars                        Array of all dining [:hall_id]s with calendars
+                                  registered for retrival.
+
+/calendar/:hall_id                Information for dining hall [:hall_id]
+                                  Same as /calendar/:cal_id/today/tomorrow. 
+
+/calendar/:hall_id/:start/:end    Dining events from date [:start] to date [:end]
+
+
+                                  LOCATIONS
+
+/locations                        
+
+/location/:loc_id                 
+
+
+                                  MENUS
+
+/menus                            
+/menu/:menu_id                    
+/menu/:menu_id/:meal_type         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+d88888b  .d8b.  d888888b d88888b d8888b. db    db        db   d8b   db d88888b d8888b. 
+88'     d8' `8b `~~88~~' 88'     88  `8D `8b  d8'        88   I8I   88 88'     88  `8D 
+88ooooo 88ooo88    88    88ooooo 88oobY'  `8bd8'         88   I8I   88 88ooooo 88oooY' 
+88~~~~~ 88~~~88    88    88~~~~~ 88`8b      88    C8888D Y8   I8I   88 88~~~~~ 88~~~b. 
+88.     88   88    88    88.     88 `88.    88           `8b d8'8b d8' 88.     88   8D 
+Y88888P YP   YP    YP    Y88888P 88   YD    YP            `8b8' `8d8'  Y88888P Y8888P' 

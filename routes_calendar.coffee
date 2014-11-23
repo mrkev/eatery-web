@@ -38,12 +38,13 @@ module.exports.cal_id = (req, res) ->
 module.exports.render_range = (req, res) ->
   cal_id = req.params.cal_id
   iroh.query(cal_id).then((data)->
-    jayjelly = render_calendar(data.events, req.params.start, req.params.end)
 
-    jayjelly['cal_id'] = cal_id
-    jayjelly['payment_methodsu'] = paymentOptionsForCalID(cal_id)
+    res.json 
+      events  : render_calendar(data.events, req.params.start, req.params.end)
+      updated : data.updated
+      cal_id  : cal_id
+      payment_methods : paymentOptionsForCalID(cal_id)
 
-    res.json jayjelly
     return
   ).catch(console.trace)
 

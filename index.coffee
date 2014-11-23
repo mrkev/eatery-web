@@ -20,7 +20,7 @@ routes_menu = require './routes_menu'
 router
   .route("/")
   .get (req, res) ->
-    res.json message: "yo, welcome to our api!"
+    res.sendFile(__dirname + "/info.txt")
     return
 
 ## Calendars
