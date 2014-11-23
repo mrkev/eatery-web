@@ -12,14 +12,10 @@ paymentOptionsForCalID = (cal_id) ->
 module.exports.location = (req, res) ->
   location = req.params.loc_id
   iroh.query(location).then((data)->
-    console.log('1')
     data['cal_id'] = location
     delete data['events']
-    console.log('2')
     data['payment_methods'] = paymentOptionsForCalID(location)
-    console.log('3')
     menu_manager.menu_id(location).then((menu_data) ->
-      console.log('4')
       data['menus'] = menu_data
       res.json data
     ).catch((e)->
