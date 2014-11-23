@@ -48,11 +48,39 @@ menus = (date, period, loc, callback) ->
         category: currentCategory
         healthy: isHealthy
       })
-    callback(menuItems)
+    callback(menuItems, period, loc)
   )
 
 today = ->
   return new Date()
+
+module.exports.all_menus = (req, res) ->
+  menu_data = {}
+  meals = ['Breakfast', 'Lunch', 'Dinner', 'Brunch']
+  callbacksLeft = 40
+  renderIfDone = (key, meal) ->
+    callbacksLeft--
+    return unless callbacksLeft <= 0
+    res.json menu_data
+  locationNameForID = (id) ->
+    for key in Object.keys(menu_locations)
+      return key if menu_locations[key] == id
+  for key in Object.keys(menu_locations)
+    for meal in meals
+      menu_id = menu_locations[key]
+      menus(today(), meal, menu_id, (items, _meal, _key) ->
+        locationName = locationNameForID(_key)
+        console.log(locationName)
+        location = menu_data[locationName]
+        if location == undefined || location == null
+          m = {}
+          m[_meal.toLowerCase()] = items
+          menu_data[locationName] = m
+        else
+          location[_meal.toLowerCase()] = items
+          menu_data[locationName] = location
+        renderIfDone(_key, _meal)
+      )
 
 module.exports.menu_id = (req, res) ->
   if (Object.keys(menu_locations).indexOf(req.params.menu_id) < 0)
