@@ -16,6 +16,7 @@ module.exports.all_menus = (req, res) ->
 
 module.exports.menu_id = (req, res) ->
   menu_manager.menu_id(req.params.menu_id).then((menu_data) ->
+    console.log('then')
     res.json menu_data
   
   ).catch((e)->

@@ -2,6 +2,20 @@ iroh = require 'Iroh'
 menu_manager = require './menu_manager'
 
 module.exports.all_locations = (req, res) ->
+  location = req.params.loc_id
+  iroh.query().then((data)->
+    # menu_manager.all_menus().then((menu_data) ->
+    #   res.json menu_data
+    
+    # ).catch((e)->
+    #   if e.name = '503'
+    #     res.status(503).end()
+    #   else
+    #     res.status(500).end()
+    # )
+    res.json data.dining
+    return
+  )
 
 # Copy and paste from routes_calendar (Sorry)
 payment_options = require('./payment_options.json')

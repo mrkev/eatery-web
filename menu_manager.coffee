@@ -33,9 +33,15 @@ class MenuManager
   #                    - 104 West!
   #                    - Okenshields
   get_menu : (date, period, loc, callback) ->
-  
     if typeof loc_id = "string"
       loc = menu_locations[loc]
+
+    # http://stackoverflow.com/a/3894087/472768
+    key = (period + date.setHours(0,0,0,0) + loc).replace(/\s/g, '')  # Remove all whitespace
+    cachedMenu = @cache[key]
+    unless cachedMenu == undefined
+      callback(cachedMenu, period, loc)
+      return
   
     request.post({
       uri: @uri,
@@ -44,7 +50,7 @@ class MenuManager
         menuperiod: period
         menulocations: loc
       }
-    }, (err, httpResp, body) ->
+    }, ((err, httpResp, body) ->
             
       if err 
         error = new Error()
@@ -66,9 +72,11 @@ class MenuManager
           healthy: isHealthy
         })
       menuItems = null if menuItems.length is 0
+      @cache[key] = menuItems
       callback(menuItems, period, loc)
-    )
+    ).bind(this))
 
+  cache: {}
   all_menus : () ->
     self = this
     return new Promise (resolve, reject) ->
