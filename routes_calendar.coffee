@@ -27,6 +27,7 @@ module.exports.cal_id = (req, res) ->
   cal_id = req.params.cal_id
   iroh.query(cal_id).then((data)->
       data['cal_id'] = cal_id
+      delete data['events']
 
       data['payment_methods'] = paymentOptionsForCalID(cal_id)
 
