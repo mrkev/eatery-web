@@ -48,6 +48,7 @@ menus = (date, period, loc, callback) ->
         category: currentCategory
         healthy: isHealthy
       })
+    menuItems = null if menuItems.length is 0
     callback(menuItems, period, loc)
   )
 
