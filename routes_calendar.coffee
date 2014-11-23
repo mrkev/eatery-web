@@ -33,6 +33,8 @@ module.exports.cal_id = (req, res) ->
 
       res.json data
       return
+    ).catch((err) ->
+      res.status(504).end()
     )
 
 # req: contains cal_id, start, and end.
@@ -47,7 +49,10 @@ module.exports.render_range = (req, res) ->
       payment_methods : paymentOptionsForCalID(cal_id)
 
     return
-  ).catch(console.trace)
+  ).catch((err) -> 
+    res.status(504).end()
+    console.trace err
+  )
 
 
 ### Rendering the range ###
