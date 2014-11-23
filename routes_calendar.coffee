@@ -26,18 +26,17 @@ module.exports.all_ids = (req, res) ->
 module.exports.cal_id = (req, res) ->
   cal_id = req.params.cal_id
   iroh.query(cal_id).then((data)->
-      data['cal_id'] = cal_id
-      delete data['events']
+    data['cal_id'] = cal_id
+    delete data['events']
 
-      data['cal_id'] = cal_id
-      data['payment_methods'] = paymentOptionsForCalID(cal_id)
+    data['payment_methods'] = paymentOptionsForCalID(cal_id)
 
-      res.json data
-      return
-    ).catch((err) ->
-      console.log('504 error on cal_id')
-      res.status(504).end()
-    )
+    res.json data
+    return
+  ).catch((err) ->
+    console.log('504 error on cal_id')
+    res.status(504).end()
+  )
 
 # req: contains cal_id, start, and end.
 module.exports.render_range = (req, res) ->
