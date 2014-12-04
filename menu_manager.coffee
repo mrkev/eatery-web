@@ -32,14 +32,14 @@ class MenuManager
   #                    - Risley Dining
   #                    - 104 West!
   #                    - Okenshields
-  get_menu : (date, period, loc, callback) ->
+  get_menu : (date, period, loc, should_refresh, callback) ->
     if typeof loc_id = "string"
       loc = menu_locations[loc]
 
     # http://stackoverflow.com/a/3894087/472768
     key = (period + date.setHours(0,0,0,0) + loc).replace(/\s/g, '')  # Remove all whitespace
     cachedMenu = @cache[key]
-    unless cachedMenu == undefined
+    unless cachedMenu == undefined || should_refresh
       callback(cachedMenu, period, loc)
       return
   
@@ -113,7 +113,7 @@ class MenuManager
         reject e
 
 
-  menu_id : (menu_id) ->
+  menu_id : (menu_id, should_refresh) ->
     self = this
     return new Promise (resolve, reject) ->
       menu_list = {}
@@ -131,22 +131,22 @@ class MenuManager
         resolve menu_list
       
       try 
-        self.get_menu(t, 'Breakfast', menu_id, (items) ->
+        self.get_menu(t, 'Breakfast', menu_id, should_refresh, (items) ->
           menu_list['breakfast'] = items
           done1 = true
           renderIfDone()
         )
-        self.get_menu(t, 'Lunch', menu_id, (items) ->
+        self.get_menu(t, 'Lunch', menu_id, should_refresh, (items) ->
           menu_list['lunch'] = items
           done2 = true
           renderIfDone()
         )
-        self.get_menu(t, 'Dinner', menu_id, (items) ->
+        self.get_menu(t, 'Dinner', menu_id, should_refresh, (items) ->
           menu_list['dinner'] = items
           done3 = true
           renderIfDone()
         )
-        self.get_menu(t, 'Brunch', menu_id, (items) ->
+        self.get_menu(t, 'Brunch', menu_id, should_refresh, (items) ->
           menu_list['brunch'] = items
           done4 = true
           renderIfDone()

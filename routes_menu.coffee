@@ -15,8 +15,9 @@ module.exports.all_menus = (req, res) ->
   )
 
 module.exports.menu_id = (req, res) ->
-  menu_manager.menu_id(req.params.menu_id).then((menu_data) ->
-    console.log('then')
+  refresh = req.query.refresh
+  should_refresh = if typeof(refresh) == 'undefined' then false else if refresh == 'true' then true else false
+  menu_manager.menu_id(req.params.menu_id, should_refresh).then((menu_data) ->
     res.json menu_data
   
   ).catch((e)->
