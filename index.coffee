@@ -6,6 +6,7 @@ require('./newrelic')
 express = require("express")
 app     = express()
 router  = express.Router()
+timeout = require('connect-timeout')
 
 config  = require("./config")
 routes_calendar = require './routes_calendar'
@@ -69,6 +70,11 @@ router
      # res.send(req.query.access_token)
      res.redirect('cuappdevEatery://authorize?access_token=' + req.query.access_token)
 
+router
+  .route('/blank')
+  .get (req, res) ->
+
+
 ### Good to go ###
 
 #
@@ -76,7 +82,16 @@ router
 #
 port = if process.env.NODE_ENV == 'production' then process.env.PORT else 8080
 app
+  .use(timeout('10s'))
   .use("/", router)
+  .use(haltOnTimedout)
   .listen(port)
+
+`function haltOnTimedout(req, res, next){
+  if (!req.timedout) 
+    next();
+  else
+    res.status(408).end();
+}`
 
 console.log("Good stuff happens on port " + port)
