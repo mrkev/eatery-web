@@ -39,7 +39,6 @@ router
   .route("/calendar/:cal_id/:start/:end")
   .get routes_calendar.render_range 
 
-
 ## Locations
 
 # FIXME: Include GPS locations for each location

@@ -13,8 +13,30 @@ module.exports.all_locations = (req, res) ->
     #   else
     #     res.status(500).end()
     # )
-    res.json data.dining
+    # res.json data.dining
+    output = []
+    for loc in data.dining
+      iroh.query(loc).then((data)->
+        data['cal_id'] = cal_id
+        # delete data['events']
+        data['payment_methods'] = paymentOptionsForCalID(cal_id)
+
+        menu_manager.menu_id(loc).then((menu_data) ->
+          data['menus'] = menu_data
+          output[loc] = data
+        ).catch((e)->
+          if e.name = '503'
+            res.status(503).end()
+          else
+            res.status(500).end()
+        )
+
+        res.json data
+      )
     return
+  ).catch((err) ->
+    console.errur('504 error on location_id')
+    res.status(504).end()
   )
 
 # Copy and paste from routes_calendar (Sorry)
@@ -41,6 +63,6 @@ module.exports.location = (req, res) ->
     )
     return
   ).catch((err) ->
-    console.log('504 error on cal_id')
+    console.log('504 error on location_id')
     res.status(504).end()
   )
