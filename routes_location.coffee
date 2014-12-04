@@ -48,7 +48,7 @@ paymentOptionsForCalID = (cal_id) ->
 module.exports.location = (req, res) ->
   location = req.params.loc_id
   iroh.query(location).then((data)->
-    data['cal_id'] = location
+    data['id'] = location
     delete data['events']
     data['payment_methods'] = paymentOptionsForCalID(location)
     menu_manager.menu_id(location).then((menu_data) ->
