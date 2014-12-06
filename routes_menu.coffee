@@ -1,4 +1,4 @@
-menu_manager = require './menu_manager'
+menu_manager = (require './menu_manager')
 
 today = ->
   return new Date()

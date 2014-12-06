@@ -10,7 +10,14 @@ today = ->
 
 class MenuManager
   constructor: (@uri) ->
-    
+    @cache = {}
+
+
+  populate_cache : () ->
+    @all_menus().then(->
+      return true
+    )
+
   ##
   # @param date       A date object.
   # 
@@ -73,10 +80,12 @@ class MenuManager
         })
       menuItems = null if menuItems.length is 0
       @cache[key] = menuItems
-      callback(menuItems, period, loc)
+      if callback
+        callback(menuItems, period, loc)
+      else 
+
     ).bind(this))
 
-  cache: {}
   all_menus : () ->
     self = this
     return new Promise (resolve, reject) ->
@@ -95,9 +104,10 @@ class MenuManager
           do(menu_id) ->
 
             for meal in meals
-              do(meal) ->
-                
-                self.get_menu(today(), meal, menu_id, (items) ->
+              do(meal) ->                
+                self.get_menu(today(), meal, menu_id, false, (items) ->
+                  console.log "Got #{meal} for #{menu_id}"
+
                   location = menu_data[menu_id]
                   if location == undefined || location == null
                     m = {}
@@ -111,7 +121,6 @@ class MenuManager
 
       catch e
         reject e
-
 
   menu_id : (menu_id, should_refresh) ->
     self = this

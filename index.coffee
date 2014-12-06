@@ -7,6 +7,8 @@ express = require("express")
 app     = express()
 router  = express.Router()
 timeout = require('connect-timeout')
+Promise = require('es6-promise').Promise;
+menu_manager = (require './menu_manager')
 
 config  = require("./config")
 routes_calendar = require './routes_calendar'
@@ -74,23 +76,38 @@ router
   .get (req, res) ->
 
 
-### Good to go ###
+
+haltOnTimedout = (req, res, next) ->
+  unless req.timedout
+    next()
+  else
+    res.status(408).end()
+  return
 
 #
 # Start the server
 #
+start_server = (port) ->
+  console.log "Populating Caches"
+  Promise.all([
+      menu_manager.populate_cache().then(-> console.log "Menu Manager ready to go.")
+    ])
+    .then(-> console.log "Caches done.")
+    .then(->
+      app
+        .use(timeout('10s'))
+        .use("/", router)
+        .use(haltOnTimedout)
+        .listen(port)
+      
+      return true
+    ).then(->
+      console.log("Good stuff happens on port " + port)
+      return true
+    )
+  
+
+
 port = if process.env.NODE_ENV == 'production' then process.env.PORT else 8080
-app
-  .use(timeout('10s'))
-  .use("/", router)
-  .use(haltOnTimedout)
-  .listen(port)
+start_server port
 
-`function haltOnTimedout(req, res, next){
-  if (!req.timedout) 
-    next();
-  else
-    res.status(408).end();
-}`
-
-console.log("Good stuff happens on port " + port)
